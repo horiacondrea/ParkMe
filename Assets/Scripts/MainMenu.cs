@@ -35,6 +35,10 @@ public class MainMenu : MonoBehaviour
         {
             SceneManager.LoadScene("MainMenu");
         }
+        else if (SceneManager.GetActiveScene().name == "EndScene")
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     public void ExitButton()

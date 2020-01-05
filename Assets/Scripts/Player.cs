@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_playerTrigger = GetComponentInChildren<PlayerTriggerCollider>();
 
-        m_playerTrigger.Parked += () => { Parked.Invoke(); };
+        m_playerTrigger.ParkedTrigger += () => { Parked.Invoke(); };
 
         m_audioSource = GetComponent<AudioSource>();
         m_Animator = gameObject.GetComponent<Animator>();

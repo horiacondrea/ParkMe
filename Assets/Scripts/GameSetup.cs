@@ -1,15 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameSetup : MonoBehaviour
 {
     [SerializeField]
     private bool m_campaign;
 
     Timer _timer;
     Player _player;
+    SpawnManager _spawnManager;
 
     GameObject _retry;
     GameObject _exit;
@@ -30,7 +33,7 @@ public class GameManager : MonoBehaviour
     {
         if (!m_campaign)
         {
-            SpawnManager _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+             _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
             if (_spawnManager == null)
             {
                 Debug.Log("ObstacleManager is NULL");
@@ -45,10 +48,26 @@ public class GameManager : MonoBehaviour
         }
         _timer.OutOfTime += _timer_OutOfTime;
 
-        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        GameObject playerGO = null;
+        if (!m_campaign)
+        {
+            playerGO = _spawnManager.GetPlayer();
+        }
+        else
+        {
+            playerGO = GameObject.Find("Player");
+        }
+
+        if (playerGO == null)
+        {
+            Debug.Log("PlayerGO is NULL");
+        }
+
+
+        _player = playerGO.GetComponent<Player>();
         if (_player == null)
         {
-            Debug.Log("Player is NULL");
+            Debug.Log("Player is NULLLL");
         }
         _player.Parked += _player_Parked;
 
@@ -97,7 +116,14 @@ public class GameManager : MonoBehaviour
         if (m_campaign)
         {
             int nextLevel = m_currentLevel + 1;
-            SceneManager.LoadScene("Level_" + nextLevel);
+            if (nextLevel > 4)
+            {
+                SceneManager.LoadScene("EndScene");
+            }
+            else
+            {
+                SceneManager.LoadScene("Level_" + nextLevel);
+            }
         }
         else
         {

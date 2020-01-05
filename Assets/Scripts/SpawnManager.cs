@@ -28,6 +28,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     GameObject _obstaclePrefab;
 
+    GameObject m_Player;
+
     bool[][] _screenMatrix = new bool[MAX_X_CELLS][];
     Vector2 _screenSize = new Vector2(MAX_X, MAX_Y);
 
@@ -81,7 +83,7 @@ public class SpawnManager : MonoBehaviour
             obstacle.transform.Rotate(new Vector3(0, 0, Random.Range(-50f,50f)));
         }
 
-        GameObject player = Instantiate(_playerPrefab, CalculatePosition(PLAYER_WIDTH, PLAYER_HEIGHT, 0f)._position, Quaternion.identity);
+        m_Player = Instantiate(_playerPrefab, CalculatePosition(PLAYER_WIDTH, PLAYER_HEIGHT, 0f)._position, Quaternion.identity);
     }
 
     Position CalculatePosition(float width, float height, float overplus)
@@ -107,5 +109,10 @@ public class SpawnManager : MonoBehaviour
         float Y = Random.Range(minY, maxY) - (_screenSize.y * 0.5f);
         
         return new Position(new Vector3(X, Y), new Vector2(X_Cell, Y_Cell));
+    }
+
+    public GameObject GetPlayer()
+    {
+        return m_Player;
     }
 }
